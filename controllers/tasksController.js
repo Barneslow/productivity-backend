@@ -82,7 +82,7 @@ exports.deleteTask = expressAsyncHandler(async (req, res) => {
   const user = req.user;
 
   try {
-    const task = await Task.findById(id);
+    const task = await Task.findByIdAndDelete(id);
 
     await User.findByIdAndUpdate(
       user._id,
