@@ -8,6 +8,7 @@ noteRoutes
   .route("/:id")
   .get(authMiddleware, noteController.fetchSessionNotes)
   .post(authMiddleware, noteController.createNote)
+  .put(authMiddleware, noteController.editNote)
   .delete(authMiddleware, noteController.deleteNote);
 
 module.exports = noteRoutes;

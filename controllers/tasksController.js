@@ -8,6 +8,8 @@ exports.createTask = expressAsyncHandler(async (req, res) => {
 
   validMongoId(_id);
 
+  console.log(req.body);
+
   try {
     const task = await Task.create({ ...req.body, user: _id });
 
@@ -28,8 +30,6 @@ exports.updateTask = expressAsyncHandler(async (req, res) => {
 
   validMongoId(id);
 
-  console.log(req.body);
-
   try {
     const task = await Task.findByIdAndUpdate(
       id,
@@ -37,6 +37,9 @@ exports.updateTask = expressAsyncHandler(async (req, res) => {
         status: req?.body?.status,
         completedAt: req?.body?.completedAt,
         isArchive: req?.body?.isArchive,
+        title: req?.body?.title,
+        description: req?.body?.description,
+        dueDate: req?.body?.dueDate,
       },
       {
         new: true,

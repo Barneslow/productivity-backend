@@ -7,6 +7,11 @@ const taskSchema = new mongoose.Schema(
       ref: "User",
     },
 
+    title: {
+      type: String,
+      required: [true, "A task description is required"],
+    },
+
     description: {
       type: String,
       required: [true, "A task description is required"],

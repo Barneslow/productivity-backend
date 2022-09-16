@@ -27,6 +27,20 @@ exports.createNote = expressAsyncHandler(async (req, res) => {
   }
 });
 
+exports.editNote = expressAsyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  validMongoId(id);
+
+  try {
+    const note = await Note.findByIdAndUpdate(id, req.body, { new: true });
+
+    res.json(note);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 exports.fetchSessionNotes = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
 
