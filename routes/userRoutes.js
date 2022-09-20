@@ -18,8 +18,18 @@ userRoutes.route("/reset-password").post(userController.passwordReset);
 userRoutes.route("/view-user/:id").get(userController.fetchViewUser);
 
 userRoutes
+  .route("/verify-email-token")
+  .post(authMiddleware, userController.generateVerificationToken);
+
+userRoutes.route("/verify-email").post(userController.accountVerifcation);
+
+userRoutes
   .route("/update-password")
   .post(authMiddleware, userController.updatePassword);
+
+userRoutes
+  .route("/account-verification")
+  .post(authMiddleware, userController.accountVerifcation);
 
 userRoutes
   .route("/upload-profile-photo")

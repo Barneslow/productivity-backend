@@ -119,6 +119,49 @@ exports.passwordReset = expressAsyncHandler(async (req, res) => {
   res.json(user);
 });
 
+exports.generateVerificationToken = expressAsyncHandler(async (req, res) => {
+  const loginUserId = req.user.id;
+
+  const user = await User.findById(loginUserId);
+
+  try {
+    const verificationToken = await user.createAccountVerificationToken();
+    await user.save();
+
+    const resetURL = `If you requested to verify your account, verify now within 10 minutes, otherwise ignore this message. <a href="http://localhost:3000/account-verification/${verificationToken}">Click to verify your account</a>`;
+    const message = {
+      to: user?.email,
+      from: "darrachb1991@gmail.com",
+      subject: "Verifiy Account",
+      html: resetURL,
+    };
+
+    await sgMail.send(message);
+    res.json(resetURL);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+exports.accountVerifcation = expressAsyncHandler(async (req, res) => {
+  const { token } = req.body;
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  const user = await User.findOne({
+    accountVerificationToken: hashedToken,
+    accountVerificationTokenExpires: { $gt: new Date() },
+  });
+
+  if (!user) throw new Error("Token expired, try again later");
+
+  user.isAccountVerified = true;
+  user.accountVerificationToken = undefined;
+
+  user.accountVerificationTokenExpires = undefined;
+  await user.save();
+  res.json(user);
+});
+
 exports.fetchAllUsers = expressAsyncHandler(async (req, res) => {
   try {
     const users = await User.find({});
