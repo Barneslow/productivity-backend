@@ -6,7 +6,6 @@ const crypto = require("crypto");
 
 const validMongoId = require("../utils/validMongoId");
 const { cloudinaryUploadImage } = require("../utils/cloudinary");
-const { Session } = require("inspector");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
