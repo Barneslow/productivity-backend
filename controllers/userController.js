@@ -57,7 +57,7 @@ exports.loginUser = expressAsyncHandler(async (req, res) => {
 
 exports.forgetPasswordToken = expressAsyncHandler(async (req, res) => {
   const { email } = req.body;
-
+§
   const user = await User.findOne({ email });
   if (!user) throw new Error("User Not Found");
 
@@ -73,6 +73,8 @@ exports.forgetPasswordToken = expressAsyncHandler(async (req, res) => {
       subject: "Reset Password",
       html: resetURL,
     };
+
+    console.log(message);
 
     await sgMail.send(message);
     res.json(message);
