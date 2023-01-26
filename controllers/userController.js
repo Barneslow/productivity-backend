@@ -57,7 +57,7 @@ exports.loginUser = expressAsyncHandler(async (req, res) => {
 
 exports.forgetPasswordToken = expressAsyncHandler(async (req, res) => {
   const { email } = req.body;
-§
+
   const user = await User.findOne({ email });
   if (!user) throw new Error("User Not Found");
 
