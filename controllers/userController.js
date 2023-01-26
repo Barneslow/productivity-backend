@@ -75,8 +75,7 @@ exports.forgetPasswordToken = expressAsyncHandler(async (req, res) => {
     };
 
     try {
-      const sentMessage = await sgMail.send(message);
-      console.log(sentMessage);
+      await sgMail.send(message);
     } catch (err) {
       console.log(err);
     }
