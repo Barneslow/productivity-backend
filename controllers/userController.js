@@ -66,7 +66,7 @@ exports.forgetPasswordToken = expressAsyncHandler(async (req, res) => {
 
     await user.save();
 
-    const resetURL = `If you were requested to reset your password, reset now within 10 minutes, otherwise ignore this message <a href="http://localhost:3000/reset-password/${token}">Click to Reset</a>`;
+    const resetURL = `If you were requested to reset your password, reset now within 10 minutes, otherwise ignore this message <a href="https://barneslow-productivity.netlify.app/reset-password/${token}">Click to Reset</a>`;
     const message = {
       to: email,
       from: "darrachb1991@gmail.com",
@@ -74,9 +74,13 @@ exports.forgetPasswordToken = expressAsyncHandler(async (req, res) => {
       html: resetURL,
     };
 
-    console.log(message);
+    try {
+      const sentMessage = await sgMail.send(message);
+      console.log(sentMessage);
+    } catch (err) {
+      console.log(err);
+    }
 
-    await sgMail.send(message);
     res.json(message);
   } catch (error) {
     res.json(error);
@@ -100,8 +104,6 @@ exports.updatePassword = expressAsyncHandler(async (req, res) => {
 });
 
 exports.passwordReset = expressAsyncHandler(async (req, res) => {
-  console.log("fire");
-
   const { token, password } = req.body;
   const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
@@ -129,7 +131,7 @@ exports.generateVerificationToken = expressAsyncHandler(async (req, res) => {
     const verificationToken = await user.createAccountVerificationToken();
     await user.save();
 
-    const resetURL = `If you requested to verify your account, verify now within 10 minutes, otherwise ignore this message. <a href="http://localhost:3000/account-verification/${verificationToken}">Click to verify your account</a>`;
+    const resetURL = `If you requested to verify your account, verify now within 10 minutes, otherwise ignore this message. <a href="https://barneslow-productivity.netlify.app/account-verification/${verificationToken}">Click to verify your account</a>`;
     const message = {
       to: user?.email,
       from: "darrachb1991@gmail.com",
