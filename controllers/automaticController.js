@@ -1,5 +1,4 @@
 const User = require("../models/userModal");
-const expressAsyncHandler = require("express-async-handler");
 
 exports.resetWeeklyGoals = async () => {
   const users = await User.find({});

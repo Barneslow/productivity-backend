@@ -39,6 +39,8 @@ exports.loginUser = expressAsyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
+  console.log(req);
+
   if (user && (await user.isPasswordMatched(password))) {
     res.json({
       _id: user._id,

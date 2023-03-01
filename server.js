@@ -19,7 +19,13 @@ dotenv.config({ path: "./.env" });
 db();
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://barneslow-productivity.netlify.app",
+  })
+);
+
+app.options("*", cors());
 
 app.use("/api/users", userRoutes);
 app.use("/api/sessions", sessionRoutes);
@@ -30,7 +36,7 @@ app.use("/api/emojis", emojiRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 80;
 
 app.listen(PORT, console.log(`Server is running on port ${PORT}`));
 
